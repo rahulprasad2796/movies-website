@@ -13,36 +13,29 @@ class App extends Component {
     }
   }
 
-  //this code works fine instead of handleSearch
-  //inline code 
-  // (e) => {
-  //   const filter = this.state.filterProducts.filter(v => v.Title.toLowerCase().includes(e.target.value));
-  //   this.setState({products: filter});
-  // }
-
-  handleSearch() {
-    //shows error TypeError: Cannot read property 'state' of undefined
-    //Why this.state is not accessible outside render, but in your code when you explained
-    //it was accessible, am I doing something wrong?
-    console.log(this.state.products);
+  handleSearch = (e) => { //remember arrow
+    //filters from the api data and sets that value to products
+    const filter = this.state.filterProducts.filter(v => v.Title.toLowerCase().includes(e.target.value));
+    this.setState({products: filter});
   }
 
-
-  render() {
+  render() { //loader is t/f while api call, if no data found on search shows no data found
     return (
       <div>
         {this.state.loader ? (<h1>Loading...</h1>) : (<div>
           <input type="text" placeholder="Search"  onChange={this.handleSearch}>
         </input>
+        <h2>Movies</h2> <hr/>
+
         <div className="card-wrapper">
-          {this.state.products.map((v, i) => <Card {...v} key={i} />)}
+          {this.state.products.length ? this.state.products.map((v, i) => <Card {...v} key={i} />) : <h2>Data not found</h2>}
         </div>
         </div>) }
       </div>
     )
   }
 
-  componentDidMount() {
+  componentDidMount() { //api call
     axios.get("https://www.omdbapi.com/?apikey=45f0782a&s=war")
     .then(res => {
       this.setState({products: res.data.Search, filterProducts: res.data.Search, loader:false});

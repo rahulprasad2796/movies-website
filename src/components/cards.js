@@ -3,7 +3,7 @@ import './cards.css';
 
 const Card = ({Title, Poster}) => {
     const [title, setTitle] = useState(false);
-    const changeState = () => {
+    const changeState = () => { //mouse hover affect is set on each call t/f, shows title or not
         setTitle(!title);
     }
     return ( <div className="cards" onMouseEnter={changeState} onMouseLeave={changeState}>
